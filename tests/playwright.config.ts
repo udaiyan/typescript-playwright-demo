@@ -7,8 +7,8 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: [
-    ['html', { outputFolder: 'playwright-report' }],  
-    ['list']  // show results in the console
+    ['html', { outputFolder: 'playwright-report' }],
+    ['list']
   ],
   use: {
     baseURL: 'http://localhost:3000',
@@ -26,16 +26,19 @@ export default defineConfig({
       use: { baseURL: 'http://localhost:5000' },
     },
   ],
+  // ✅ Uncomment this block – it starts servers automatically
   webServer: [
     {
-      command: 'cd ../backend && npm run dev',
+      command: 'npm run dev --prefix ../backend',
       port: 5000,
       reuseExistingServer: !process.env.CI,
+      timeout: 120 * 1000,
     },
     {
-      command: 'cd ../frontend && npm run dev',
+      command: 'npm run dev --prefix ../frontend',
       port: 3000,
       reuseExistingServer: !process.env.CI,
+      timeout: 120 * 1000,
     },
   ],
 });

@@ -23,21 +23,20 @@ jobs:
         run: cd frontend && npm ci
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
-      - name: Run Playwright tests with verbose output
+      - name: Run Playwright tests
         run: |
-          npx playwright test --reporter=html,list
-        continue-on-error: true  # Don't stop even if tests fail
-      - name: Debug - list all files
+          npx playwright test --config=tests/playwright.config.ts --reporter=html,list
+        continue-on-error: true
+      - name: Debug – list files
         if: always()
         run: |
-          echo "Current directory:"
-          pwd
+          echo "Current directory: $(pwd)"
           echo "Files in root:"
           ls -la
           echo "Looking for playwright-report:"
-          ls -la playwright-report/ 2>/dev/null || echo "playwright-report folder NOT found"
+          ls -la playwright-report/ 2>/dev/null || echo "Folder not found"
           echo "Looking for test-results:"
-          ls -la test-results/ 2>/dev/null || echo "test-results folder NOT found"
+          ls -la test-results/ 2>/dev/null || echo "Folder not found"
       - name: Upload Playwright report
         uses: actions/upload-artifact@v5
         if: always()
