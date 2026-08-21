@@ -26,16 +26,15 @@ export default defineConfig({
       use: { baseURL: 'http://localhost:5000' },
     },
   ],
-  // ✅ Uncomment this block – it starts servers automatically
   webServer: [
     {
-      command: 'npm run dev --prefix ../backend',
+      command: 'npm run dev --prefix backend',
       port: 5000,
       reuseExistingServer: !process.env.CI,
       timeout: 120 * 1000,
     },
     {
-      command: 'npm run dev --prefix ../frontend',
+      command: 'npm run dev --prefix frontend',
       port: 3000,
       reuseExistingServer: !process.env.CI,
       timeout: 120 * 1000,

@@ -27,16 +27,19 @@ jobs:
         run: |
           npx playwright test --config=tests/playwright.config.ts --reporter=html,list
         continue-on-error: true
-      - name: Debug – list files
+      - name: Debug – show current directory and files
         if: always()
         run: |
           echo "Current directory: $(pwd)"
           echo "Files in root:"
           ls -la
           echo "Looking for playwright-report:"
-          ls -la playwright-report/ 2>/dev/null || echo "Folder not found"
-          echo "Looking for test-results:"
-          ls -la test-results/ 2>/dev/null || echo "Folder not found"
+          if [ -d "playwright-report" ]; then
+            echo "Folder exists, contents:"
+            ls -la playwright-report/
+          else
+            echo "playwright-report folder NOT found"
+          fi
       - name: Upload Playwright report
         uses: actions/upload-artifact@v5
         if: always()
