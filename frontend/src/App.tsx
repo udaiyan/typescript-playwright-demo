@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getItems, createItem, deleteItem, updateItem } from './api/client';
 import { Item } from './types';
 import ItemTable from './components/ItemTable';
