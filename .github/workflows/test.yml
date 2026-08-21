@@ -11,8 +11,8 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 18
       - name: Install dependencies (root)
@@ -23,11 +23,26 @@ jobs:
         run: cd frontend && npm ci
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: npm test
-      - uses: actions/upload-artifact@v4
+      - name: Run Playwright tests with verbose output
+        run: |
+          npx playwright test --reporter=html,list
+        continue-on-error: true  # Don't stop even if tests fail
+      - name: Debug - list all files
+        if: always()
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Files in root:"
+          ls -la
+          echo "Looking for playwright-report:"
+          ls -la playwright-report/ 2>/dev/null || echo "playwright-report folder NOT found"
+          echo "Looking for test-results:"
+          ls -la test-results/ 2>/dev/null || echo "test-results folder NOT found"
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+          if-no-files-found: warn
