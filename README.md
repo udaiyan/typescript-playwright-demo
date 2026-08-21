@@ -82,10 +82,9 @@ npm run build
 
 ## Demo
 
-<div style="display: flex; gap: 10px;">
-  <img src="screenshot_front.png" alt="Frontend UI" width="48%" />
-  <img src="screenshot_back.png" alt="Backend API" width="48%" />
-</div>
+| Frontend UI | Backend API |
+|:---:|:---:|
+| ![Frontend](screenshot_front.png) | ![Backend](screenshot_back.png) |
 
 # License
 
