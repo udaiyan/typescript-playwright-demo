@@ -45,9 +45,6 @@ npm run test:headed
 # View the HTML report
 npx playwright test --reporter=html
 
-# Build for production
-npm run build
-
 # Project Structure
 .
 ├── backend/          # Express API (TypeScript)
