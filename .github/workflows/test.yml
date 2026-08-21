@@ -10,36 +10,68 @@ jobs:
   test:
     timeout-minutes: 10
     runs-on: ubuntu-latest
+
     steps:
+      # 1. Check out the code
       - uses: actions/checkout@v5
+
+      # 2. Set up Node.js
       - uses: actions/setup-node@v5
         with:
           node-version: 18
-      - name: Install dependencies (root)
+
+      # 3. Install root dependencies (Playwright, concurrently, etc.)
+      - name: Install root dependencies
         run: npm ci
-      - name: Install backend deps
-        run: cd backend && npm ci
-      - name: Install frontend deps
-        run: cd frontend && npm ci
+
+      # 4. Install backend dependencies and build it
+      - name: Install & build backend
+        run: |
+          cd backend
+          npm ci
+          npm run build
+
+      # 5. Install frontend dependencies and build it
+      - name: Install & build frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+
+      # 6. Install Playwright browsers
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
+
+      # 7. Start backend in the background and wait for it to be ready
+      - name: Start backend
+        run: |
+          cd backend
+          npm run start &
+          npx wait-on http://localhost:5000
+
+      # 8. Start frontend in the background and wait for it to be ready
+      - name: Start frontend
+        run: |
+          cd frontend
+          npm run start &
+          npx wait-on http://localhost:3000
+
+      # 9. Run Playwright tests (with HTML reporter)
       - name: Run Playwright tests
         run: |
           npx playwright test --config=tests/playwright.config.ts --reporter=html,list
         continue-on-error: true
-      - name: Debug – show current directory and files
+
+      # 10. Debug: show workspace contents (optional but helpful)
+      - name: Debug workspace
         if: always()
         run: |
-          echo "Current directory: $(pwd)"
-          echo "Files in root:"
+          echo "Contents of root:"
           ls -la
-          echo "Looking for playwright-report:"
-          if [ -d "playwright-report" ]; then
-            echo "Folder exists, contents:"
-            ls -la playwright-report/
-          else
-            echo "playwright-report folder NOT found"
-          fi
+          echo "Contents of playwright-report (if exists):"
+          ls -la playwright-report/ 2>/dev/null || echo "playwright-report folder not found"
+
+      # 11. Upload the HTML report as an artifact
       - name: Upload Playwright report
         uses: actions/upload-artifact@v5
         if: always()

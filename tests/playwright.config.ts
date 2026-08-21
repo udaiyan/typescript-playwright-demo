@@ -6,14 +6,18 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
+
+  // ✅ HTML reporter – will create playwright-report/ folder
   reporter: [
     ['html', { outputFolder: 'playwright-report' }],
     ['list']
   ],
+
   use: {
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
   },
+
   projects: [
     {
       name: 'ui',
@@ -26,18 +30,6 @@ export default defineConfig({
       use: { baseURL: 'http://localhost:5000' },
     },
   ],
-  webServer: [
-    {
-      command: 'npm run dev --prefix backend',
-      port: 5000,
-      reuseExistingServer: !process.env.CI,
-      timeout: 120 * 1000,
-    },
-    {
-      command: 'npm run dev --prefix frontend',
-      port: 3000,
-      reuseExistingServer: !process.env.CI,
-      timeout: 120 * 1000,
-    },
-  ],
+
+  // ❌ No webServer block – servers are started manually in the workflow
 });
