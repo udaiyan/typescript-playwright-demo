@@ -35,6 +35,7 @@ const AddItemForm: React.FC<Props> = ({ onAdd }) => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="border rounded px-3 py-1"
+          data-testid="name-input"
           required
         />
       </div>
@@ -45,6 +46,7 @@ const AddItemForm: React.FC<Props> = ({ onAdd }) => {
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           className="border rounded px-3 py-1"
+          data-testid="category-input"
           required
         />
       </div>
@@ -56,6 +58,7 @@ const AddItemForm: React.FC<Props> = ({ onAdd }) => {
           value={price}
           onChange={(e) => setPrice(e.target.value)}
           className="border rounded px-3 py-1"
+          data-testid="price-input"
           required
         />
       </div>

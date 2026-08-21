@@ -2,6 +2,14 @@ import { Request, Response } from 'express';
 import { items } from '../data/items';
 import { Item } from '../models/item';
 import { v4 as uuidv4 } from 'uuid';
+import { items as initialItems } from '../data/items';
+
+export const resetItems = (req: Request, res: Response) => {
+  // Clear the array and repopulate with initial data
+  items.length = 0;
+  items.push(...initialItems);
+  res.status(200).json({ message: 'Data reset' });
+};
 
 // GET /api/items
 export const getItems = (req: Request, res: Response) => {

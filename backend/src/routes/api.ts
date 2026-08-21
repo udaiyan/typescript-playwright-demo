@@ -3,6 +3,7 @@ import * as itemsController from '../controllers/itemsController';
 
 const router = Router();
 
+router.post('/reset', itemsController.resetItems);
 router.get('/items', itemsController.getItems);
 router.get('/items/:id', itemsController.getItemById);
 router.post('/items', itemsController.createItem);

@@ -30,20 +30,20 @@ cd ..
 npm run dev
 
 # Running Tests
+Run the frontend/backend as above and open a new cmd to run the tests.
+Restart the backend for each test run as the data will be reset (otherwise the tests will fail)
+
+# install playwright
+npx playwright install 
+
 # All tests (UI + API)
 npm test
-
-# UI tests only
-npm run test:ui
-
-# API tests only
-npm run test:api
 
 # With headed browser
 npm run test:headed
 
 # View the HTML report
-npm run test:report
+npx playwright test --reporter=html
 
 # Build for production
 npm run build
